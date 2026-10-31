@@ -1,40 +1,59 @@
-# dsh-agent-team-scheduler
+<h1 align="center">dsh-agent-team-scheduler</h1>
 
-DeepSeek Harness 插件：把 Agent Teams 任务板变成由人开启的派工队列。
+<p align="center">
+  <a href="README.md">English</a> ·
+  <a href="README.zh.md">简体中文</a>
+</p>
 
-先开启 **Agent Teams**。没开时本插件会保持 pending。
+<p align="center">DeepSeek Harness Agent Teams 的派工队列，由人开启。</p>
 
-## 做什么
+Lead 登记任务。人打开队列。就绪的工作分给空闲 teammate，写入范围重叠的任务不会同时跑。
 
-- Lead 用 `team_dispatch_set` 登记任务（优先级、截止时间、auto/manual、只读、优先成员）。
-- 只有人能用 `/dispatch on` 开始派发，模型不能自己打开队列。
-- 就绪、无人认领、标记 auto 的任务，在 WIP 上限内（默认 2）分给空闲 teammate。
-- 写入范围重叠的任务不会同时派。没写范围默认推迟，除非标成只读。`.` 和 `/` 视为整个工作区。
-- 创建失败的成员名下的任务会释放。成员只是 inactive **不算完成**，只通知 Lead，不收回任务。
-- 消息可能已经进了持久邮箱时，不会自动重发。要重试，重新登记该任务。
-- 进程重启后队列暂停，直到再次 `/dispatch on`。
+- **人来开启：** `/dispatch on` 才开始。模型不能自己打开。
+- **有上限：** 默认同时最多两个由 teammate 负责的任务。用 `/dispatch wip <n>` 修改。
+- **按范围错开：** 写入范围重叠就等待。没写范围也等待，除非任务是只读。
+- **不自动重试：** 成员停下来不算完成。投递结果不确定时不重发。
+- **重启即暂停：** 再次 `/dispatch on` 之前不会派发。
 
-## 命令
+## 开始使用
+
+### 前置条件
+
+- DeepSeek Harness `>=0.2.1-rc.5 <0.3.0`
+- 同一 profile 已开启 Agent Teams
+
+### 插件
+
+在 dsh 里打开 **Plugins → Install a third-party plugin**，输入 `dsh-agent-team-scheduler`。或者在终端：
+
+```bash
+dsh plugin --profile web add dsh-agent-team-scheduler
+```
+
+安装到 `desktop` profile 前先退出 Desktop。重启 dsh。在 Team Lead 会话里：
 
 ```text
 /dispatch on
-/dispatch off
 /dispatch status
+/dispatch off
 /dispatch wip <n>
 ```
 
-## 安装
-
-先开启 Agent Teams，再安装已发布的 npm 包。
-
-插件页：**Add package**，输入 `dsh-agent-team-scheduler`。
-
-命令行（目标是 `desktop` profile 时，先完全退出 Desktop）：
-
-```sh
-dsh plugin --profile <profile> add dsh-agent-team-scheduler
-```
+Lead 用 `team_dispatch_set` 登记任务。
 
 ## 限制
 
-只在单进程内有效。Lead 必须在线。写入范围只是提示，不是锁。不会自动新建 teammate，也不会自动建 worktree。
+只在一个进程内有效。Lead 必须在线。写入范围是提示，不是锁。插件不会创建 teammate 或 worktree。
+
+## 开发
+
+```bash
+npm ci
+npm run typecheck
+npm run build
+npm test
+```
+
+## 许可证
+
+MIT。与 DeepSeek 无关。

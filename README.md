@@ -1,40 +1,59 @@
-# dsh-agent-team-scheduler
+<h1 align="center">dsh-agent-team-scheduler</h1>
 
-A DeepSeek Harness plugin that turns the Agent Teams task board into a human-armed dispatch queue.
+<p align="center">
+  <a href="README.md">English</a> ·
+  <a href="README.zh.md">简体中文</a>
+</p>
 
-Enable **Agent Teams** first. This plugin stays pending until that bundle is on.
+<p align="center">A dispatch queue for DeepSeek Harness Agent Teams, armed by a person.</p>
 
-## What it does
+The Lead enrolls tasks. A person starts the queue. Ready work goes to idle teammates, and overlapping write scopes do not run together.
 
-- The Lead enrolls tasks with `team_dispatch_set` (priority, deadline, auto/manual, read-only, preferred teammate).
-- A human starts dispatch with `/dispatch on`. The model cannot arm the queue.
-- Ready, unowned, auto tasks are assigned to idle teammates within a WIP limit (default 2).
-- Tasks with overlapping write scopes are not assigned at the same time. A missing write scope is deferred unless the task is marked read-only. `.` and `/` count as the whole workspace.
-- A failed member's task is released. An inactive owner is **not** treated as done; the Lead is notified and ownership stays.
-- If a brief may already have been queued, the scheduler does not retry it. Re-enroll the task to clear that hold.
-- Restart pauses dispatch until `/dispatch on` again, even if the log was armed.
+- **Human armed:** `/dispatch on` starts it. The model cannot.
+- **Bounded:** At most two teammate-owned tasks run at once. Change it with `/dispatch wip <n>`.
+- **Isolated by hint:** Overlapping write scopes wait. A missing scope waits unless the task is read-only.
+- **Not a retry loop:** An inactive owner is not done. An uncertain delivery is not sent again.
+- **Paused on restart:** Dispatch stays off until `/dispatch on` again.
 
-## Commands
+## Getting Started
+
+### Prerequisites
+
+- DeepSeek Harness `>=0.2.1-rc.5 <0.3.0`
+- Agent Teams enabled in the same profile
+
+### Plugin
+
+In dsh, open **Plugins → Install a third-party plugin** and enter `dsh-agent-team-scheduler`. Or from the terminal:
+
+```bash
+dsh plugin --profile web add dsh-agent-team-scheduler
+```
+
+Quit Desktop before installing into the `desktop` profile. Restart dsh. In a Team Lead session:
 
 ```text
 /dispatch on
-/dispatch off
 /dispatch status
+/dispatch off
 /dispatch wip <n>
 ```
 
-## Install
-
-Enable Agent Teams, then install the published npm package.
-
-Plugins page: **Add package**, then enter `dsh-agent-team-scheduler`.
-
-CLI (quit Desktop first when targeting the `desktop` profile):
-
-```sh
-dsh plugin --profile <profile> add dsh-agent-team-scheduler
-```
+The Lead enrolls a task with `team_dispatch_set`.
 
 ## Limits
 
-Single process. The Lead must be live. Write scopes are hints, not locks. No automatic teammate creation and no worktree isolation.
+One process. The Lead must be live. Write scopes are hints, not locks. The plugin does not create teammates or worktrees.
+
+## Development
+
+```bash
+npm ci
+npm run typecheck
+npm run build
+npm test
+```
+
+## License
+
+MIT. Not affiliated with DeepSeek.

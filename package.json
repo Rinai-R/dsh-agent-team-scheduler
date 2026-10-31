@@ -1,6 +1,6 @@
 {
   "name": "dsh-agent-team-scheduler",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Scheduler for DeepSeek Harness Agent Teams: dispatches ready, auto-marked board tasks to idle teammates within a WIP limit, without overlapping write scopes, after a human arms it.",
   "license": "MIT",
   "author": "Rinai-R",
