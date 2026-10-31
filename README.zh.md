@@ -25,12 +25,14 @@ DeepSeek Harness 插件：把 Agent Teams 任务板变成由人开启的派工�
 
 ## 安装
 
-插件页粘贴本仓库的绝对路径，或发布后添加 `dsh-agent-team-scheduler`。必须是带 `cordis.patch.yml` 的 bundle。
+先开启 Agent Teams，再安装已发布的 npm 包。
 
-本地 CLI（改 desktop profile 前先完全退出 Desktop）：
+插件页：**Add package**，输入 `dsh-agent-team-scheduler`。
+
+命令行（目标是 `desktop` profile 时，先完全退出 Desktop）：
 
 ```sh
-dsh plugin --profile <profile> add /absolute/path/to/dsh-agent-team-scheduler
+dsh plugin --profile <profile> add dsh-agent-team-scheduler
 ```
 
 ## 限制

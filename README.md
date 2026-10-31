@@ -25,12 +25,14 @@ Enable **Agent Teams** first. This plugin stays pending until that bundle is on.
 
 ## Install
 
-In the plugin page, add the absolute path of this repo, or after publish add `dsh-agent-team-scheduler`. The package must be a bundle (`cordis.patch.yml`).
+Enable Agent Teams, then install the published npm package.
 
-Local CLI (quit Desktop first if targeting the desktop profile):
+Plugins page: **Add package**, then enter `dsh-agent-team-scheduler`.
+
+CLI (quit Desktop first when targeting the `desktop` profile):
 
 ```sh
-dsh plugin --profile <profile> add /absolute/path/to/dsh-agent-team-scheduler
+dsh plugin --profile <profile> add dsh-agent-team-scheduler
 ```
 
 ## Limits
