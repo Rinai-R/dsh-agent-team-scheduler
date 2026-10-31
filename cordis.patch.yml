@@ -1,0 +1,6 @@
+# Bundle layer: mount dsh-agent-team-scheduler after (and independent of) the Agent Teams bundle.
+# The plugin injects agentTeams/tools/commands/sessionQuery and stays pending until Agent Teams is enabled.
+- insert:
+    - id: dsh-agent-team-scheduler
+      name: dsh-agent-team-scheduler
+      config: {}

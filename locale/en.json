@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Agent Team Scheduler",
+    "description": "Human-armed dispatch queue for Agent Teams: assigns ready, enrolled board tasks to idle teammates within a WIP limit without overlapping write scopes (/dispatch on|off|status|wip)."
+  }
+}

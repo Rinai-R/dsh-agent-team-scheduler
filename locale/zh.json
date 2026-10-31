@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Agent Team 调度器",
+    "description": "由人工开启的 Agent Teams 派工队列：在 WIP 上限内，把已登记且就绪的任务分配给空闲 teammate，并避免写入范围重叠（/dispatch on|off|status|wip）。"
+  }
+}
